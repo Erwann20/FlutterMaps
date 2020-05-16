@@ -11,12 +11,29 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+
+
 class _MyAppState extends State<MyApp> {
   final Map<String, Marker> _markers = {};
+
+  BitmapDescriptor pinLocationIcon;
+
+  @override
+  void initState() {
+    super.initState();
+    setCustomMapPin();
+
+    print(pinLocationIcon);
+  }
+
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 4),
+        'assets/markerpics32x32.png');
+  }
+
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices = await students.getGoogleOffices();
-    print(googleOffices.length);
-
 
     setState(() {
       _markers.clear();
@@ -25,9 +42,10 @@ class _MyAppState extends State<MyApp> {
           markerId: MarkerId(office.nometudiant),
           position: LatLng(office.latitude, office.longitude),
           infoWindow: InfoWindow(
-            title: office.nometudiant,
+            title: office.nometudiant + " " + office.prenometudiant,
             snippet: office.villeetudiant,
           ),
+          icon: pinLocationIcon
         );
         _markers[office.nometudiant] = marker;
       }
@@ -40,7 +58,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Coucou maman !!!!!'),
+          title: const Text('Localisation étudiante'),
           backgroundColor: Colors.green[700],
         ),
         body: GoogleMap(
