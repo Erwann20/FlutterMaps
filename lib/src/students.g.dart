@@ -27,16 +27,3 @@ Map<String, dynamic> _$StudentToJson(Student instance) => <String, dynamic>{
       'longitude': instance.longitude,
       'villeetudiant': instance.villeetudiant,
     };
-
-Locations _$LocationsFromJson(Map<String, dynamic> json) {
-  return Locations(
-    student: (json['student'] as List)
-        ?.map((e) =>
-            e == null ? null : Student.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
-
-Map<String, dynamic> _$LocationsToJson(Locations instance) => <String, dynamic>{
-      'student': instance.student,
-    };

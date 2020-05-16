@@ -32,19 +32,6 @@ class Student {
 
 }
 
-@JsonSerializable()
-class Locations {
-  Locations({
-    this.student
-  });
-
-  factory Locations.fromJson(Map<String, dynamic> json) =>
-      _$LocationsFromJson(json);
-  Map<String, dynamic> toJson() => _$LocationsToJson(this);
-
-  final List<Student> student;
-}
-
 
 // A function that converts a response body into a List<Photo>.
 List<Student> parseStudent(String responseBody) {
@@ -52,16 +39,13 @@ List<Student> parseStudent(String responseBody) {
 
   return parsed.map<Student>((json) => Student.fromJson(json)).toList();
 }
-
-
-Future<List<Student>> getGoogleOffices() async {
+// Retrieve student API data
+Future<List<Student>> getStudents() async {
   const googleLocationsURL = 'http://92.154.94.25/~SLAM2/Rest_server_etuds_flutter/index.php/api/MonAppli/etudiants/format/json';
 
   // Retrieve the locations of Google offices
   final response = await http.get(googleLocationsURL);
   if (response.statusCode == 200) {
-    print(json.decode(response.body));
-
     return  compute(parseStudent, response.body);
   } else {
     throw HttpException(
