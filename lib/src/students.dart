@@ -33,7 +33,7 @@ class Student {
 }
 
 
-// A function that converts a response body into a List<Photo>.
+// A function that converts a response body into a List<Student>.
 List<Student> parseStudent(String responseBody) {
   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
